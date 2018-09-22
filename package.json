@@ -24,6 +24,8 @@
   "dependencies": {
     "preact": "^8.2.1",
     "preact-fluid": "^0.7.0",
-    "preact-router": "^2.6.1"
+    "preact-redux": "^2.0.3",
+    "preact-router": "^2.6.1",
+    "redux": "^4.0.0"
   }
 }

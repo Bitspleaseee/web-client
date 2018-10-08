@@ -3,6 +3,7 @@ import { Provider } from 'preact-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import reducer from './reducers/'
+import createHashHistory from 'history/createHashHistory'
 
 import 'preact-material-components/style.css'
 import './style.css'
@@ -12,7 +13,12 @@ import Login from './routes/login.js'
 import Signup from './routes/signup.js'
 
 // Setup for Redux devtools
-const composeEnhancers = (window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose
+let composeEnhancers
+if (typeof window !== 'undefined') {
+  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+} else {
+  composeEnhancers = compose
+}
 
 const store = createStore(
   reducer,
@@ -21,7 +27,7 @@ const store = createStore(
 
 const App = () =>
   <Provider store={store}>
-    <Router>
+    <Router history={createHashHistory()}>
       <Home path='/' />
       <Login path='/login' />
       <Signup path='/signup' />

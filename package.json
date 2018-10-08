@@ -7,25 +7,47 @@
     "build": "preact build",
     "serve": "preact build && preact serve",
     "dev": "preact watch",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "fix": "eslint --fix src"
   },
   "eslintConfig": {
-    "extends": "eslint-config-synacor"
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "jsx": true
+    },
+    "env": {
+        "browser": true
+    },
+    "extends": [
+      "standard",
+      "standard-jsx"
+    ]
   },
   "eslintIgnore": [
     "build/*"
   ],
   "devDependencies": {
-    "eslint": "^4.5.0",
-    "eslint-config-synacor": "^1.1.0",
+    "babel-eslint": "^8.2.6",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-config-standard-jsx": "^6.0.2",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-standard": "^4.0.0",
     "if-env": "^1.0.0",
-    "preact-cli": "^2.0.0"
+    "preact-cli": "^2.0.0",
+    "prettier": "^1.14.3"
   },
   "dependencies": {
+    "linkstate": "^1.1.1",
     "preact": "^8.2.1",
-    "preact-fluid": "^0.7.0",
+    "preact-material-components": "^1.5.3",
     "preact-redux": "^2.0.3",
     "preact-router": "^2.6.1",
-    "redux": "^4.0.0"
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0"
   }
 }

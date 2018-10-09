@@ -20,9 +20,9 @@ class Signup extends Component {
     { username, password, email }
   ) {
     if (isAuth) {
-      route('/dashboard')
+      route('/dashboard', true)
     }
-    return <Grid columns={'1fr'}>
+    return <Grid columns={'1fr'} style={{ 'max-width': '900px', 'margin': '0 auto', 'padding': '10px' }}>
       <Cell middle>
         <h1>Signup</h1>
       </Cell>

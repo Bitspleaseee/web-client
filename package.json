@@ -23,7 +23,10 @@
     "extends": [
       "standard",
       "standard-jsx"
-    ]
+    ],
+    "rules": {
+        "camelcase": "off"
+    }
   },
   "eslintIgnore": [
     "build/*"

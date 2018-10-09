@@ -7,10 +7,10 @@ import createBrowserHistory from 'history/createHashHistory'
 
 import './style.css'
 
-import Home from './routes/home.js'
 import Login from './routes/login.js'
 import Signup from './routes/signup.js'
 import Dashboard from './routes/dashboard.js'
+import Thread from './routes/thread.js'
 
 // Setup for Redux devtools
 let composeEnhancers
@@ -33,10 +33,10 @@ media.addListener(m => {
 const App = () =>
   <Provider store={store}>
     <Router history={createBrowserHistory()}>
-      <Home path='/' />
-      <Dashboard path='/dashboard' />
+      <Dashboard path='/' />
       <Login path='/login' />
       <Signup path='/signup' />
+      <Thread path='/thread/:id' />
     </Router>
   </Provider>
 

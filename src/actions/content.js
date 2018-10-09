@@ -98,8 +98,8 @@ export const getAllThreads = _ => dispatch => {
     .catch(e => dispatch(requestError(e)))
 }
 
-export const getThreadsOfCategory = id => dispatch => {
-  dispatch(payload('GET_THREADS_OF_CATEGORY_PENDING')({ id }))
+export const getThreadsInCategory = id => dispatch => {
+  dispatch(payload('GET_THREADS_IN_CATEGORY_PENDING')({ id }))
   getRequest(`/category/${id}/threads`)
     .then(res => dispatch(res))
     .catch(e => dispatch(requestError(e)))
@@ -137,8 +137,8 @@ export const getAllComments = _ => dispatch => {
     .catch(e => dispatch(requestError(e)))
 }
 
-export const getCommentsOfThread = id => dispatch => {
-  dispatch(payload('GET_COMMENTS_OF_THREAD_PENDING')({ id }))
+export const getCommentsInThread = id => dispatch => {
+  dispatch(payload('GET_COMMENTS_IN_THREAD_PENDING')({ id }))
   getRequest(`/thread/${id}/comments`)
     .then(res => dispatch(res))
     .catch(e => dispatch(requestError(e)))

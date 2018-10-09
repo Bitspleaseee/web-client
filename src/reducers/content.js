@@ -10,6 +10,16 @@ export default (state = {}, action) => {
           { user_id, username, description, avatar }
         ]
       }
+    case 'CATEGORIES':
+      return { ...state,
+        pending: false,
+        categories: [...action.payload]
+      }
+    case 'THREADS':
+      return { ...state,
+        pending: false,
+        threads: [...action.payload]
+      }
     default:
       return state
   }

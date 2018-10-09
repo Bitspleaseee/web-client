@@ -20,10 +20,15 @@ if (typeof window !== 'undefined') {
   composeEnhancers = compose
 }
 
-const store = createStore(
+export const store = createStore(
   reducer,
   composeEnhancers(applyMiddleware(thunk))
 )
+
+const media = window.matchMedia('(max-width: 650px)')
+media.addListener(m => {
+  store.dispatch({ 'type': 'MEDIA_QUERY', 'payload': { 'mobile': m.matches } })
+})
 
 const App = () =>
   <Provider store={store}>

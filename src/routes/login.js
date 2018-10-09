@@ -18,6 +18,9 @@ class Login extends Component {
     { isAuthPending, isAuth, authUsername, authenticate, deauthenticate },
     { username, password }
   ) {
+    if (isAuth) {
+      route('/dashboard')
+    }
     return <Grid columns={'1fr'}>
       <Cell middle>
         <h1>Login</h1>

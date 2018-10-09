@@ -10,6 +10,7 @@ import './style.css'
 import Home from './routes/home.js'
 import Login from './routes/login.js'
 import Signup from './routes/signup.js'
+import Dashboard from './routes/dashboard.js'
 
 // Setup for Redux devtools
 let composeEnhancers
@@ -28,6 +29,7 @@ const App = () =>
   <Provider store={store}>
     <Router history={createBrowserHistory()}>
       <Home path='/' />
+      <Dashboard path='/dashboard' />
       <Login path='/login' />
       <Signup path='/signup' />
     </Router>

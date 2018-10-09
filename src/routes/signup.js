@@ -19,6 +19,9 @@ class Signup extends Component {
     { isAuthPending, isAuth, authUsername, registerUser, deauthenticate },
     { username, password, email }
   ) {
+    if (isAuth) {
+      route('/dashboard')
+    }
     return <Grid columns={'1fr'}>
       <Cell middle>
         <h1>Signup</h1>

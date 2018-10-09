@@ -1,17 +1,18 @@
-const jsonRequest = host => method => url => data => {
+const jsonRequest = host => method => bodyFn => url => data => {
+  // TODO has to be removed before deploy
   console.group(`'${method}' '${host + url}'`)
   console.log(JSON.stringify(data, null, '\t'))
   console.groupEnd()
 
   return fetch(host + url, {
-    method: 'POST',
+    method,
     mode: 'cors',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
     credentials: 'include',
-    body: JSON.stringify(data)
+    body: bodyFn(data)
   })
     .then(res => {
       if (res.headers.get('content-type') !== 'application/json') {
@@ -31,5 +32,5 @@ export const payload = type => (data = {}) =>
 
 const domainRequest = jsonRequest('http://localhost:9234')
 
-export const postJson = domainRequest('POST')
-export const getJson = domainRequest('GET')
+export const postJson = domainRequest('POST')(JSON.stringify)
+export const getJson = url => domainRequest('GET')(_ => null)(url)()

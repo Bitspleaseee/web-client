@@ -3,9 +3,8 @@ import { Provider } from 'preact-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import reducer from './reducers/'
-import createHashHistory from 'history/createHashHistory'
+import createBrowserHistory from 'history/createHashHistory'
 
-import 'preact-material-components/style.css'
 import './style.css'
 
 import Home from './routes/home.js'
@@ -27,7 +26,7 @@ const store = createStore(
 
 const App = () =>
   <Provider store={store}>
-    <Router history={createHashHistory()}>
+    <Router history={createBrowserHistory()}>
       <Home path='/' />
       <Login path='/login' />
       <Signup path='/signup' />

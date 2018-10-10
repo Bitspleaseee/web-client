@@ -7,7 +7,11 @@ import { getAllCategories, getAllThreads } from '../actions/content.js'
 
 class Dashboard extends Component {
   componentWillMount () {
-    this.props.getData()
+    if (this.props.isAuth) {
+      this.props.getData()
+    } else {
+      route('/signup', true)
+    }
   }
 
   render ({ categories, threads, pending, mobile }) {
@@ -53,7 +57,8 @@ const mapDispatchToProps = (dispatch, props) => ({
   }
 })
 
-const mapStateToProps = ({ content, media }) => ({
+const mapStateToProps = ({ auth, content, media }) => ({
+  isAuth: auth.authenticated,
   pending: content.pending,
   categories: content.categories,
   threads: content.threads,

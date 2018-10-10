@@ -14,7 +14,7 @@ import Thread from './routes/thread.js'
 
 // Setup for Redux devtools
 let composeEnhancers
-if (typeof window !== 'undefined') {
+if (process.env.NODE_ENV !== 'production') {
   composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 } else {
   composeEnhancers = compose

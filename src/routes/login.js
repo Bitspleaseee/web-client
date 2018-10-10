@@ -5,7 +5,7 @@ import { route } from 'preact-router'
 import { Grid, Cell } from 'preact-fluid'
 
 import { authenticate, deauthenticate } from '../actions/auth.js'
-import WarningCard from '../components/WarningCard.js'
+import ErrorCard from '../components/ErrorCard.js'
 import Form from '../components/Form.js'
 
 class Login extends Component {
@@ -15,22 +15,20 @@ class Login extends Component {
   };
 
   render (
-    { isAuthPending, isAuth, authUsername, authenticate, deauthenticate },
+    { error, isAuthPending, isAuth, authUsername, authenticate, deauthenticate },
     { username, password }
   ) {
     if (isAuth) {
-      route('/dashboard', true)
+      route('/', true)
     }
     return <Grid columns={'1fr'} style={{ 'max-width': '900px', 'margin': '0 auto', 'padding': '10px' }}>
       <Cell middle>
         <h1>Login</h1>
       </Cell>
-      { isAuth &&
+      { error &&
       <Cell middle>
-        <WarningCard
-          message={`You are already logged in as ${authUsername}`}
-          label='Logout'
-          onClick={deauthenticate}
+        <ErrorCard
+          message={error}
         />
       </Cell>
       }
@@ -72,6 +70,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = ({ auth }) => ({
+  error: auth.error,
   isAuthPending: auth.pending,
   isAuth: auth.authenticated,
   authUsername: auth.username

@@ -48,7 +48,7 @@ class Thread extends Component {
           value={content}
           onChange={linkState(this, 'content')} />
 
-        <Button onClick={_ => addComment({ thread_id: thread.id, content })}>Add comment</Button>
+        <Button onClick={_ => addComment(content)}>Add comment</Button>
       </Cell>
       }
     </Grid>
@@ -84,14 +84,25 @@ const mapStateToProps = ({ auth, content, media }, props) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, props) => ({
-  fetchData: _ => {
-    dispatch(getThread(props.id))
-    dispatch(getCommentsInThread(props.id))
-  },
-  getUser: id => dispatch(getUser(id)),
-  addComment: (data) => dispatch(addComment(data))
-})
+const mapDispatchToProps = (dispatch, props) => {
+  const propsId = parseInt(props.id)
+  if (isNaN(propsId)) {
+    return {
+      fetchData: _ => {},
+      getUser: _ => {},
+      addComment: _ => {}
+    }
+  } else {
+    return {
+      fetchData: _ => {
+        dispatch(getThread(propsId))
+        dispatch(getCommentsInThread(propsId))
+      },
+      getUser: id => dispatch(getUser(id)),
+      addComment: content => dispatch(addComment({ thread_id: propsId, content }))
+    }
+  }
+}
 
 export default connect(
   mapStateToProps,

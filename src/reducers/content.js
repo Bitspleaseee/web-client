@@ -56,6 +56,8 @@ export default (state = {}, action) => {
         pending: state.pending - 1,
         error: action.payload
       }
+    case 'INTERNAL_SERVER_ERROR':
+      return { ...state, error: 'Internal server error occured', pending: false }
     default:
       return {
         categories: [],

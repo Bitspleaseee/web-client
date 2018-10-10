@@ -1,8 +1,8 @@
 const jsonRequest = host => method => bodyFn => url => data => {
   // TODO has to be removed before deploy
-  console.group(`'${method}' '${host + url}'`)
-  console.log(JSON.stringify(data, null, '\t'))
-  console.groupEnd()
+  // console.group(`'${method}' '${host + url}'`)
+  // console.log(JSON.stringify(data, null, '\t'))
+  // console.groupEnd()
 
   return fetch(host + url, {
     method,
@@ -30,7 +30,7 @@ export const payload = type => (data = {}) =>
     'payload': data
   })
 
-const domainRequest = jsonRequest('http://localhost:9234')
+const domainRequest = jsonRequest(`http://${window.location.hostname}`)
 
 export const postJson = domainRequest('POST')(JSON.stringify)
 export const getJson = url => domainRequest('GET')(_ => null)(url)()

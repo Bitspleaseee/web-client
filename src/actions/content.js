@@ -27,7 +27,7 @@ export const getUser = id => dispatch => {
     .catch(e => dispatch(requestError(e)))
 }
 
-export const editUser = (description, avatar) => dispatch => {
+export const editUser = ({ description, avatar }) => dispatch => {
   dispatch(payload('EDIT_USER_PENDING')())
   postRequest(payload('EDIT_USER')({ description, avatar }))
     .then(res => dispatch(res))
@@ -38,14 +38,14 @@ export const editUser = (description, avatar) => dispatch => {
 //  CATEGORIES
 //
 
-export const addCategory = (title, description) => dispatch => {
+export const addCategory = ({ title, description }) => dispatch => {
   dispatch(payload('ADD_CATEGORY_PENDING')())
   postRequest(payload('ADD_CATEGORY')({ title, description }))
     .then(res => dispatch(res))
     .catch(e => dispatch(requestError(e)))
 }
 
-export const editCategory = (id, title, description) => dispatch => {
+export const editCategory = ({ id, title, description }) => dispatch => {
   dispatch(payload('EDIT_CATEGORY_PENDING')())
   postRequest(payload('EDIT_CATEGORY')({ id, title, description }))
     .then(res => dispatch(res))
@@ -70,14 +70,14 @@ export const getAllCategories = _ => dispatch => {
 // THREADS
 //
 
-export const addThread = (categoryId, userId, title, description) => dispatch => {
+export const addThread = ({ category_id, user_id, title, description }) => dispatch => {
   dispatch(payload('ADD_THREAD_PENDING')())
   postRequest(payload('ADD_THREAD')({ categoryId, userId, title, description }))
     .then(res => dispatch(res))
     .catch(e => dispatch(requestError(e)))
 }
 
-export const editThread = (id, title, description) => dispatch => {
+export const editThread = ({ id, title, description }) => dispatch => {
   dispatch(payload('EDIT_THREAD_PENDING')())
   postRequest(payload('EDIT_THREAD')({ id, title, description }))
     .then(res => dispatch(res))
@@ -109,14 +109,14 @@ export const getThreadsInCategory = id => dispatch => {
 // COMMENTS
 //
 
-export const addComment = (threadId, userId, parentId, content) => dispatch => {
+export const addComment = ({ thread_id, parent_id, content }) => dispatch => {
   dispatch(payload('ADD_COMMENT_PENDING')())
-  postRequest(payload('ADD_COMMENT')({ threadId, userId, parentId, content }))
+  postRequest(payload('ADD_COMMENT')({ thread_id, parent_id, content }))
     .then(res => dispatch(res))
     .catch(e => dispatch(requestError(e)))
 }
 
-export const editComment = (id, content) => dispatch => {
+export const editComment = ({ id, content }) => dispatch => {
   dispatch(payload('EDIT_COMMENT_PENDING')())
   postRequest(payload('EDIT_COMMENT')({ id, content }))
     .then(res => dispatch(res))

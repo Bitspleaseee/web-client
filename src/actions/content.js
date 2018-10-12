@@ -1,145 +1,58 @@
-import { postJson, getJson, payload } from './'
+import { postToRedux, getToRedux, payload } from './'
 
-const getRequest = s => getJson('/api' + s)
-const postRequest = postJson('/api/content')
-
-const requestError = payload('CONTENT_REQUEST_ERROR')
-
+// A GET request to the host specified in 'actions/index.js'
+// This function returns a function which looks like:
 //
-// SEARCH
+// type => data => dispatch => { .. }
+const getRequest = getToRedux('/api')('LOCAL_CONTENT_ERROR')
+
+const postRequest = postToRedux('/api/content')('LOCAL_CONTENT_ERROR')
+
+// All of these functions below this point return a function when called. The
+// returning function looks like:
 //
+// dispatch => { .. }
 
-export const search = query => dispatch => {
-  dispatch(payload('SEARCH_PENDING'))
-  getJson(`/search?q=${query}`)()
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
+export const search = query => getRequest('SEARCH_QUERY')(`/search?q=${query}`)
+export const getUser = user_id => (dispatch, getState) => {
+  const { content } = getState()
+  if (!content.users.find(({ id }) => id === user_id)) {
+    return getRequest('GET_USER')(`/user/${user_id}`)(dispatch)
+  }
 }
-
-//
-//  USER
-//
-
-export const getUser = id => dispatch => {
-  dispatch(payload('GET_USER_PENDING')())
-  getRequest(`/user/${id}`)
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
+export const getCategory = cat_id => (dispatch, getState) => {
+  const { content } = getState()
+  if (!content.categories.find(({ id }) => id === cat_id)) {
+    return getRequest('GET_CATEGORY')(`/category/${cat_id}`)(dispatch)
+  }
 }
-
-export const editUser = ({ description, avatar }) => dispatch => {
-  dispatch(payload('EDIT_USER_PENDING')())
-  postRequest(payload('EDIT_USER')({ description, avatar }))
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
+export const getAllCategories = _ => getRequest('GET_ALL_CATEGORIES')(`/categories`)
+export const getThread = thr_id => (dispatch, getState) => {
+  const { content } = getState()
+  if (!content.threads.find(({ id }) => id === thr_id)) {
+    getRequest('GET_THREAD')(`/thread/${thr_id}`)(dispatch)
+  }
 }
+export const getAllThreads = _ => getRequest('GET_ALL_THREADS')(`/threads`)
+export const getThreadsInCategory = cat_id => getRequest('GET_THREADS_IN_CATEGORY')(`/category/${cat_id}/threads`)
+export const getComment = cmd_id => getRequest('GET_COMMENT')(`/comment/${cmd_id}`)
+export const getAllComments = _ => getRequest('GET_ALL_COMMENTS')(`/comments`)
+export const getCommentsInThread = thr_id => getRequest('GET_COMMENTS_IN_THREAD')(`/thread/${thr_id}/comments`)
 
-//
-//  CATEGORIES
-//
+export const editUser = ({ description, avatar }) =>
+  postRequest('EDIT_USER')({ description, avatar })
+export const addCategory = ({ title, description }) =>
+  postRequest('ADD_CATEGORY')({ title, description })
+export const editCategory = ({ id, title, description }) =>
+  postRequest('EDIT_CATEGORY')({ id, title, description })
+export const addThread = ({ category_id, title, description }) =>
+  postRequest('ADD_THREAD')({ category_id, title, description })
+export const editThread = ({ id, title, description }) =>
+  postRequest('EDIT_THREAD')({ id, title, description })
+export const addComment = ({ thread_id, parent_id, content }) =>
+  postRequest('ADD_COMMENT')({ thread_id, parent_id, content })
+export const editComment = ({ id, content }) =>
+  postRequest('EDIT_COMMENT')({ id, content })
 
-export const addCategory = ({ title, description }) => dispatch => {
-  dispatch(payload('ADD_CATEGORY_PENDING')())
-  postRequest(payload('ADD_CATEGORY')({ title, description }))
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-export const editCategory = ({ id, title, description }) => dispatch => {
-  dispatch(payload('EDIT_CATEGORY_PENDING')())
-  postRequest(payload('EDIT_CATEGORY')({ id, title, description }))
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-export const getCategory = id => dispatch => {
-  dispatch(payload('GET_CATEGORY_PENDING')())
-  getRequest(`/category/${id}`)
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-export const getAllCategories = _ => dispatch => {
-  dispatch(payload('GET_ALL_CATEGORIES_PENDING')())
-  getRequest(`/categories`)
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-//
-// THREADS
-//
-
-export const addThread = ({ category_id, user_id, title, description }) => dispatch => {
-  dispatch(payload('ADD_THREAD_PENDING')())
-  postRequest(payload('ADD_THREAD')({ categoryId, userId, title, description }))
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-export const editThread = ({ id, title, description }) => dispatch => {
-  dispatch(payload('EDIT_THREAD_PENDING')())
-  postRequest(payload('EDIT_THREAD')({ id, title, description }))
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-export const getThread = id => dispatch => {
-  dispatch(payload('GET_THREAD_PENDING')())
-  getRequest(`/thread/${id}`)
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-export const getAllThreads = _ => dispatch => {
-  dispatch(payload('GET_ALL_THREADS_PENDING')())
-  getRequest(`/threads`)
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-export const getThreadsInCategory = id => dispatch => {
-  dispatch(payload('GET_THREADS_IN_CATEGORY_PENDING')({ id }))
-  getRequest(`/category/${id}/threads`)
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-//
-// COMMENTS
-//
-
-export const addComment = ({ thread_id, parent_id, content }) => dispatch => {
-  dispatch(payload('ADD_COMMENT_PENDING')())
-  postRequest(payload('ADD_COMMENT')({ thread_id, parent_id, content }))
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-export const editComment = ({ id, content }) => dispatch => {
-  dispatch(payload('EDIT_COMMENT_PENDING')())
-  postRequest(payload('EDIT_COMMENT')({ id, content }))
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-export const getComment = id => dispatch => {
-  dispatch(payload('GET_COMMENT_PENDING')())
-  getRequest(`/comment/${id}`)
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-export const getAllComments = _ => dispatch => {
-  dispatch(payload('GET_ALL_COMMENTS_PENDING')())
-  getRequest(`/comments`)
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
-
-export const getCommentsInThread = id => dispatch => {
-  dispatch(payload('GET_COMMENTS_IN_THREAD_PENDING')({ id }))
-  getRequest(`/thread/${id}/comments`)
-    .then(res => dispatch(res))
-    .catch(e => dispatch(requestError(e)))
-}
+export const acceptError = _ =>
+  payload('ACCEPTED_ERROR')()

@@ -6,9 +6,9 @@
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
     "build": "NODE_ENV=production preact build --template src/template.html",
-    "build-to-sec": "NODE_ENV=production preact build --template src/template.html --no-prerender --dest ../security-gate/static --clean",
+    "build-to-sec": "NODE_ENV=production preact build --no-production --template src/template.html --no-prerender --dest ../security-gate/static --clean",
     "serve": "preact build --template src/template.html && preact serve",
-    "dev": "preact watch",
+    "dev": "NODE_ENV=development preact watch --template src/template.html",
     "lint": "eslint src",
     "fix": "eslint --fix src"
   },
@@ -43,7 +43,8 @@
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
     "if-env": "^1.0.0",
-    "preact-cli": "^2.0.0"
+    "preact-cli": "^2.0.0",
+    "redux-logger": "^3.0.6"
   },
   "dependencies": {
     "history": "^4.7.2",

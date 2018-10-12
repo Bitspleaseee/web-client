@@ -1,84 +1,75 @@
 import { Component } from 'preact'
-import linkState from 'linkstate'
 import { connect } from 'preact-redux'
 import { route } from 'preact-router'
-import { Grid, Cell } from 'preact-fluid'
+import linkState from 'linkstate'
 
-import { authenticate, deauthenticate } from '../actions/auth.js'
-import ErrorCard from '../components/ErrorCard.js'
+import { authenticate, deauthenticate, acceptError } from '../actions/auth.js'
+import InfoCard from '../components/InfoCard.js'
 import Form from '../components/Form.js'
+import CenteredGrid from '../components/CenteredGrid.js'
 
 class Login extends Component {
-  state = {
-    username: '',
-    password: ''
-  };
-
-  render (
-    { error, isAuthPending, isAuth, authUsername, authenticate, deauthenticate },
+  render = (
+    { error, pending, authenticate, isAuthenticated, deauthenticate, acceptError },
     { username, password }
-  ) {
-    if (isAuth) {
-      route('/', true)
+  ) => <CenteredGrid>
+    <h1>Login</h1>
+    { error &&
+    <InfoCard
+      type='error'
+      message={error}
+      label='Ok'
+      action={acceptError}
+    />
     }
-    return <Grid columns={'1fr'} style={{ 'max-width': '900px', 'margin': '0 auto', 'padding': '10px' }}>
-      <Cell middle>
-        <h1>Login</h1>
-      </Cell>
-      { error &&
-      <Cell middle>
-        <ErrorCard
-          message={error}
-        />
-      </Cell>
+    { isAuthenticated &&
+    <InfoCard
+      type='success'
+      message='You are logged in. Please continue to your dashboard by following the prompt'
+      label='Go to dashboard'
+      action={_ => route('/', false)
       }
-      <Cell middle>
-        <Form
-          inputs={[
-            {
-              label: 'Username',
-              value: username,
-              disabled: isAuth,
-              onChange: linkState(this, 'username')
-            },
-            {
-              label: 'Password',
-              type: 'password',
-              value: password,
-              disabled: isAuth,
-              onChange: linkState(this, 'password')
-            }
-          ]}
-          actions={[
-            {
-              label: 'Login',
-              loading: isAuthPending,
-              disabled: isAuth,
-              primary: true,
-              onClick: _ => authenticate({ username, password })
-            },
-            {
-              label: 'Don\'t have an account?',
-              loading: false,
-              disabled: isAuth,
-              onClick: _ => route('/signup')
-            }
-          ]} />
-      </Cell>
-    </Grid>
-  }
+    />
+    }
+    <Form
+      inputs={[
+        {
+          label: 'Username',
+          value: username,
+          onChange: linkState(this, 'username')
+        },
+        {
+          label: 'Password',
+          type: 'password',
+          value: password,
+          onChange: linkState(this, 'password')
+        }
+      ]}
+      actions={[
+        {
+          label: 'Login',
+          loading: pending,
+          primary: true,
+          onClick: _ => authenticate({ username, password })
+        },
+        {
+          label: 'Don\'t have an account?',
+          onClick: _ => route('/signup')
+        }
+      ]} />
+  </CenteredGrid>
 }
 
 const mapStateToProps = ({ auth }) => ({
   error: auth.error,
-  isAuthPending: auth.pending,
-  isAuth: auth.authenticated,
-  authUsername: auth.username
+  pending: auth.pending,
+  isAuthenticated: auth.authenticated
 })
 
 const mapDispatchToProps = dispatch => ({
   authenticate: (data) => dispatch(authenticate(data)),
-  deauthenticate: () => dispatch(deauthenticate())
+  deauthenticate: () => dispatch(deauthenticate()),
+  acceptError: () => dispatch(acceptError())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

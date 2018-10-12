@@ -51,13 +51,16 @@ export default (state = {}, action) => {
         pending: state.pending - 1,
         comments: [...state.comments, action.payload]
       }
+    case 'LOCAL_CONTENT_ERROR':
     case 'CONTENT_REQUEST_ERROR':
       return { ...state,
         pending: state.pending - 1,
         error: action.payload
       }
     case 'INTERNAL_SERVER_ERROR':
-      return { ...state, error: 'Internal server error occured', pending: false }
+      return { ...state, error: 'Internal server error occured', pending: state.pending - 1 }
+    case 'ACCEPTED_ERROR':
+      return { ...state, error: null }
     default:
       return {
         categories: [],
